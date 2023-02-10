@@ -6,8 +6,133 @@ use FindBin;
 use lib "$FindBin::Bin/lib";
 BEGIN { $ENV{SPVM_BUILD_DIR} = "$FindBin::Bin/.spvm_build"; }
 
+use File::Temp;
+
+use SPVM 'File::Path';
+use SPVM 'Int';
+
 use SPVM 'TestCase::File::Path';
 
 ok(SPVM::TestCase::File::Path->test);
+
+my $api = SPVM::api();
+
+# mkpath
+{
+  {
+    my $temp_dir = File::Temp->newdir;
+    
+    my $dir_base = "foo/bar";
+    
+    my $dir = "$temp_dir/$dir_base";
+    
+    SPVM::File::Path->mkpath($dir);
+    
+    ok(-d $dir);
+  }
+  {
+    my $temp_dir = File::Temp->newdir;
+    
+    my $dir_base = "foo/bar/baz/hello";
+    
+    my $dir = "$temp_dir/$dir_base";
+    
+    SPVM::File::Path->mkpath($dir);
+    
+    ok(-d $dir);
+  }
+  {
+    my $temp_dir = File::Temp->newdir;
+    
+    my $dir_base = "foo/bar/";
+    
+    my $dir = "$temp_dir/$dir_base";
+    
+    SPVM::File::Path->mkpath($dir);
+    
+    ok(-d $dir);
+  }
+  {
+    my $temp_dir = File::Temp->newdir;
+    
+    my $dir_base = "foo";
+    
+    my $dir = "$temp_dir/$dir_base";
+    
+    SPVM::File::Path->mkpath($dir);
+    
+    ok(-d $dir);
+  }
+  {
+    my $temp_dir = File::Temp->newdir;
+    
+    my $dir_base = "foo/bar/baz/hello";
+    
+    my $dir = "$temp_dir/$dir_base";
+    
+    SPVM::File::Path->mkpath($dir, $api->new_any_object_array([$api->new_string("mode"), SPVM::Int->new(0777)]));
+    
+    ok(-d $dir);
+  }
+}
+
+# make_path
+{
+  {
+    my $temp_dir = File::Temp->newdir;
+    
+    my $dir_base = "foo/bar";
+    
+    my $dir = "$temp_dir/$dir_base";
+    
+    SPVM::File::Path->make_path($dir);
+    
+    ok(-d $dir);
+  }
+  {
+    my $temp_dir = File::Temp->newdir;
+    
+    my $dir_base = "foo/bar/baz/hello";
+    
+    my $dir = "$temp_dir/$dir_base";
+    
+    SPVM::File::Path->make_path($dir);
+    
+    ok(-d $dir);
+  }
+  {
+    my $temp_dir = File::Temp->newdir;
+    
+    my $dir_base = "foo/bar/";
+    
+    my $dir = "$temp_dir/$dir_base";
+    
+    SPVM::File::Path->make_path($dir);
+    
+    ok(-d $dir);
+  }
+  {
+    my $temp_dir = File::Temp->newdir;
+    
+    my $dir_base = "foo";
+    
+    my $dir = "$temp_dir/$dir_base";
+    
+    SPVM::File::Path->make_path($dir);
+    
+    ok(-d $dir);
+  }
+  {
+    my $temp_dir = File::Temp->newdir;
+    
+    my $dir_base = "foo/bar/baz/hello";
+    
+    my $dir = "$temp_dir/$dir_base";
+    
+    SPVM::File::Path->make_path($dir, $api->new_any_object_array([$api->new_string("mode"), SPVM::Int->new(0777)]));
+    
+    ok(-d $dir);
+  }
+}
 
 done_testing;
