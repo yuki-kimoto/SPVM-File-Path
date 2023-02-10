@@ -24,22 +24,25 @@ class File::Path {
     }
     
     my $created = 0;
+    &_mkpath_recursive($path, \$created, $mode);
+    
+    return $created;
+  }
+  
+  private static method _mkpath_recursive : void ($path : string, $created_ref : int*, $mode : int) {
     unless (Sys::FileTest->d($path)) {
       
       my $parent = File::Basename->dirname($path);
       
       unless (Sys::FileTest->d($parent) || $path eq $parent ) {
-        my $parent_created = &mkpath($parent, $options_h->to_array);
-        $created += $parent_created;
+        &_mkpath_recursive($parent, $created_ref, $mode);
       }
       
       Sys::IO->mkdir($path, $mode);
-      $created++;
+      $$created_ref++;
     }
-    
-    return $created;
   }
-
+  
   static method make_path : int ($path : string, $options = undef : object[]) {
     return &mkpath($path, $options);
   }

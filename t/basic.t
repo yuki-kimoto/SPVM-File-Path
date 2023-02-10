@@ -37,9 +37,10 @@ my $api = SPVM::api();
     
     my $dir = "$temp_dir/$dir_base";
     
-    SPVM::File::Path->mkpath($dir);
+    my $created = SPVM::File::Path->mkpath($dir);
     
     ok(-d $dir);
+    is($created, 4);
   }
   {
     my $temp_dir = File::Temp->newdir;
@@ -48,9 +49,10 @@ my $api = SPVM::api();
     
     my $dir = "$temp_dir/$dir_base";
     
-    SPVM::File::Path->mkpath($dir);
+    my $created = SPVM::File::Path->mkpath($dir);
     
     ok(-d $dir);
+    is($created, 2);
   }
   {
     my $temp_dir = File::Temp->newdir;
@@ -59,9 +61,10 @@ my $api = SPVM::api();
     
     my $dir = "$temp_dir/$dir_base";
     
-    SPVM::File::Path->mkpath($dir);
+    my $created = SPVM::File::Path->mkpath($dir);
     
     ok(-d $dir);
+    is($created, 1);
   }
   {
     my $temp_dir = File::Temp->newdir;
