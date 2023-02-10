@@ -49,7 +49,7 @@ class File::Path {
     return &mkpath($path, $options);
   }
 
-  static method rmtree : int ($path : string, $options = undef : object[]) {
+  static method rmtree : int ($path : string) {
 
     unless ($path) {
       die "The \$path must be defined";
@@ -59,74 +59,44 @@ class File::Path {
       die "The length of \$path must be greater than or equal to 0";
     }
     
-    my $prefix_buffer = StringBuffer->new;
-    my $depth = 0;
-    
-    my $clean_path;
-    push @clean_path, $p;
-    
     my $removed_count  = 0;
+    &_rmtree_recursive($path, \$removed_count);
+    
+    return $removed_count;
+  }
+
+  private static method _rmtree_recursive : void ($path : string, $removed_count_ref : int*) {
     my $curdir = File::Spec->curdir;
     my $updir  = File::Spec->updir;
     
-    if (-d $path) {
-      my $path_fh;
-      if (open($path_fh, '<', $path)) {
-          my ($fh_dev, $fh_inode) = (stat $path_fh )[0,1];
-          $perm &= oct '7777';
-          my $nperm = $perm | oct '700';
-          local $@;
-          if (
-              !(
-                  $data->{safe}
-                 or $nperm == $perm
-                 or !-d _
-                 or $fh_dev ne $ldev
-                 or $fh_inode ne $lino
-                 or eval { chmod( $nperm, $path_fh ) }
-              )
-            )
-          {
-              _error( $data,
-                  "cannot make child directory read-write-exec", $canon );
-              next ROOT_DIR;
-          }
-          close $path_fh;
-      }
-      if ( !chdir($path) ) {
-          _error( $data, "cannot chdir to child", $canon );
-          next ROOT_DIR;
-      }
-
+    if (Sys::FileTest->d($path)) {
       my $dh = Sys::IO->opendir($path);
-      my $dir_ent = Sys::IO->readdir($dh);
-      my $file_base_name = $dir_ent->d_name;
+      my $file_base_names_list = StringList->new;
       
-      if ($file_base_name eq $updir) {
-        return;
+      while (my $dir_ent = Sys::IO->readdir($dh)) {
+        my $file_base_name = "tmp";
+        # my $file_base_name = $dir_ent->d_name;
+        if ($file_base_name eq $updir) {
+          next;
+        }
+        
+        if ($file_base_name eq $curdir) {
+          next;
+        }
+        
+        $file_base_names_list->push($file_base_name);
       }
       
-      if ($file_base_name eq $curdir) {
-        return;
+      if ($file_base_names_list->length > 0) {
+        &_rmtree_recursive($path, $removed_count_ref);
       }
-      
-      if (@files) {
-        # remove the contained files before the directory itself
-        my $narg = {%$data};
-        @{$narg}{qw(device inode cwd prefix depth)} =
-          ( $cur_dev, $cur_inode, $updir, $canon, $data->{depth} + 1 );
-        $removed_count += _rmtree( $narg, \@files );
-      }
-
       Sys::IO->rmdir($path);
-      $removed_count++;
+      $$removed_count_ref++;
     }
     else {
       Sys::IO->unlink($path);
-      $removed_count++;
+      $$removed_count_ref++;
     }
-    
-    return $removed_count;
   }
 }
 
