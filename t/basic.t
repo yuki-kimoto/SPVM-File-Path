@@ -152,11 +152,13 @@ my $api = SPVM::api();
     ok(-d $dir);
     
     {
-      my $io_file = IO::File->new("$dir/a.txt", ">");
+      open my $fh, '>', "$dir/a.txt"
+        or die;
       ok(-f "$dir/a.txt");
     }
     {
-      my $io_file = IO::File->new("$dir/b.txt", ">");
+      open my $fh, '>', "$dir/b.txt"
+        or die;
       ok(-f "$dir/b.txt");
     }
     
@@ -187,11 +189,13 @@ my $api = SPVM::api();
     ok(-d $dir);
     
     {
-      my $io_file = IO::File->new("$dir/a.txt", ">");
+      open my $fh, '>', "$dir/a.txt"
+        or die;
       ok(-f "$dir/a.txt");
     }
     {
-      my $io_file = IO::File->new("$dir/b.txt", ">");
+      open my $fh, '>', "$dir/b.txt"
+        or die;
       ok(-f "$dir/b.txt");
     }
     
