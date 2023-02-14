@@ -101,8 +101,11 @@ class File::Path {
       $$removed_count_ref++;
     }
   }
+  
+  static method remove_tree : int ($path : string) {
+    return &rmtree($path);
+  }
 }
-
 =pod
 
 package File::Path;
