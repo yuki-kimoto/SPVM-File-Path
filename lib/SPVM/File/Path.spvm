@@ -1,11 +1,11 @@
 class File::Path {
   use Hash;
-  use Sys::FileTest;
-  use File::Basename;
-  use StringList;
-  use Sys::IO;
   use StringBuffer;
+  use StringList;
+  use Sys::FileTest;
+  use Sys::IO;
   use Cwd;
+  use File::Basename;
   
   static method mkpath : int ($path : string, $options = undef : object[]) {
     
