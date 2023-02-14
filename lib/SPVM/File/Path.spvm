@@ -74,8 +74,7 @@ class File::Path {
       my $file_base_names_list = StringList->new;
       
       while (my $dir_ent = Sys::IO->readdir($dh)) {
-        my $file_base_name = "tmp";
-        # my $file_base_name = $dir_ent->d_name;
+        my $file_base_name = $dir_ent->d_name;
         if ($file_base_name eq $updir) {
           next;
         }
@@ -88,7 +87,11 @@ class File::Path {
       }
       
       if ($file_base_names_list->length > 0) {
-        &_rmtree_recursive($path, $removed_count_ref);
+        my $file_base_names = $file_base_names_list->to_array;
+        for my $file_base_name (@$file_base_names) {
+          my $child_dir = "$path/$file_base_name";
+          &_rmtree_recursive($child_dir, $removed_count_ref);
+        }
       }
       Sys::IO->rmdir($path);
       $$removed_count_ref++;

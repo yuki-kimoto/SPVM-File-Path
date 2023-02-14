@@ -138,4 +138,38 @@ my $api = SPVM::api();
   }
 }
 
+# rmtree
+{
+  {
+    my $temp_dir = File::Temp->newdir;
+    
+    my $dir_base = "foo/bar/baz/hello";
+    
+    my $dir = "$temp_dir/$dir_base";
+    
+    SPVM::File::Path->mkpath($dir);
+    
+    ok(-d $dir);
+    
+    {
+      my $io_file = IO::File->new("$dir/a.txt", ">");
+      ok(-f "$dir/a.txt");
+    }
+    {
+      my $io_file = IO::File->new("$dir/b.txt", ">");
+      ok(-f "$dir/b.txt");
+    }
+    
+    my $remove_dir = "$temp_dir/foo";
+    
+    ok(-d $remove_dir);
+    
+    SPVM::File::Path->rmtree($remove_dir);
+    
+    ok(!-d $remove_dir);
+    ok(!-f "$dir/a.txt");
+    ok(!-f "$dir/b.txt");
+  }
+}
+
 done_testing;
