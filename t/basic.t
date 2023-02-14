@@ -164,11 +164,12 @@ my $api = SPVM::api();
     
     ok(-d $remove_dir);
     
-    SPVM::File::Path->rmtree($remove_dir);
+    my $removed_count = SPVM::File::Path->rmtree($remove_dir);
     
     ok(!-d $remove_dir);
     ok(!-f "$dir/a.txt");
     ok(!-f "$dir/b.txt");
+    is($removed_count, 6);
   }
 }
 
