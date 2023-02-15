@@ -33,8 +33,8 @@ WriteMakefile(
     resources => {
       repository => {
         type => 'git',
-        url  => '',
-        web  => '',
+        url  => 'https://github.com/yuki-kimoto/SPVM-File-Path.git',
+        web  => 'https://github.com/yuki-kimoto/SPVM-File-Path',
       },
     },
     no_index => {
@@ -47,6 +47,8 @@ WriteMakefile(
   },
   PREREQ_PM         => {
     %configure_and_runtime_requires,
+    'SPVM::Sys' => '0.39',
+    
   },
   TEST_REQUIRES => {
     
