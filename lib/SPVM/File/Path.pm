@@ -24,7 +24,7 @@ C<SPVM::File::Path> is the C<File::Path> class in L<SPVM> language. It has metho
 
 =head2 mkpath
 
-  static method mkpath : int ($path : string, $options = undef : object[]) ;
+  static method mkpath : int ($path : string, $options : object[] = undef) ;
 
 Creates a multi-level path.
 
@@ -42,7 +42,7 @@ If the value is less than C<0>, it becomes C<0777>.
 
 =head2 make_path
 
-  static method make_path : int ($path : string, $options = undef : object[]);
+  static method make_path : int ($path : string, $options : object[] = undef);
 
 The same as L</"mkpath">.
 
