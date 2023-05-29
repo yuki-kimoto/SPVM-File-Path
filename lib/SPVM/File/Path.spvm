@@ -2,6 +2,8 @@
 # MIT License
 
 class File::Path {
+  version "0.010";
+  
   use Hash;
   use StringBuffer;
   use StringList;
