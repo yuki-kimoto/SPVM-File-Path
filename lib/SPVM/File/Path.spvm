@@ -2,7 +2,7 @@
 # MIT License
 
 class File::Path {
-  version "0.011";
+  version "0.011001";
   
   use Hash;
   use StringBuffer;
