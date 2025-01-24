@@ -20,6 +20,8 @@ ok(SPVM::TestCase::File::Path->test);
 
 my $api = SPVM::api();
 
+my $start_memory_blocks_count = $api->get_memory_blocks_count();
+
 # mkpath
 {
   {
@@ -220,5 +222,9 @@ my $api = SPVM::api();
   is($SPVM::File::Path::VERSION, SPVM::Fn->get_version_string('File::Path'));
 }
 
+SPVM::Fn->destroy_runtime_permanent_vars;
+
+my $end_memory_blocks_count = $api->get_memory_blocks_count();
+is($end_memory_blocks_count, $start_memory_blocks_count);
 
 done_testing;

@@ -10,7 +10,7 @@ SPVM::File::Path - Creating and Removing Multi-Level Path
 
 =head1 Description
 
-C<SPVM::File::Path> is the C<File::Path> class in L<SPVM> language. It has methods to create a multi-level path and to remove a directory that contain files or directories within them.
+File::Path in L<SPVM> has methods to create a multi-level path and to remove a directory that contain files or directories within them.
 
 =head1 Usage
 
