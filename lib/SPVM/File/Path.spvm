@@ -5,11 +5,10 @@ class File::Path {
   version "0.012";
   
   use Hash;
-  use StringBuffer;
   use StringList;
   use Sys::IO;
-  use Cwd;
   use File::Basename;
+  use File::Spec;
   
   static method mkpath : int ($path : string, $options : object[] = undef) {
     
