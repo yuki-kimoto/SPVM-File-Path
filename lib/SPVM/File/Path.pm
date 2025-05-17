@@ -16,23 +16,23 @@ File::Path in L<SPVM> has methods to create a multi-level path and to remove a d
 
   use File::Path;
   
-  File::Path->make_path("foo/bar");
+  File::Path->mkpath("foo/bar");
   
-  File::Path->remove_tree("foo");
+  File::Path->rmtree("foo");
 
 =head1 Class Methods
 
 =head2 mkpath
 
-  static method mkpath : int ($path : string, $options : object[] = undef) ;
+C<static method mkpath : int ($path : string, $options : object[] = undef);>
 
-Creates a multi-level path.
+Creates a multi-level path given the $path and the options $otptions.
 
 Options:
 
 =over 2
 
-=item C<mode> = C<-1>: L<Int|SPVM::Int>
+=item C<mode : L<Int|SPVM::Int> = -1>
 
 The mode that is used by L<mkdir|SPVM::Sys::IO/"mkdir"> to create directories.
 
@@ -40,29 +40,45 @@ If the value is less than C<0>, it becomes C<0777>.
 
 =back
 
+See Perl's L<File::Path/"mkpath"> for details.
+
 =head2 make_path
 
-  static method make_path : int ($path : string, $options : object[] = undef);
+C<static method make_path : int ($path : string, $options : object[] = undef);>
 
-The same as L</"mkpath">.
+The same as L</"mkpath"> method.
 
 =head2 rmtree
 
-  static method rmtree : int ($path : string);
+C<static method rmtree : int ($path : string);>
 
-Removes a directory that contain files or directories within them.
+Removes a directory $path that contain files or directories within them.
+
+See Perl's L<File::Path/"rmtree"> for details.
 
 =head2 remove_tree
 
-  static method remove_tree : int ($path : string);
+C<static method remove_tree : int ($path : string);>
 
-The same as L</"rmtree">.
+The same as L</"rmtree"> method.
+
+=head1 Porting
+
+C<SPVM::File::Path> is a Perl's L<File::Path> porting to L<SPVM>.
 
 =head1 See Also
 
-=head2 File::Path
+=over 2
 
-C<SPVM::File::Path> is a Perl's L<File::Path> porting to L<SPVM>.
+=item * L<Sys|SPVM::Sys>
+
+=item * L<IO|SPVM::IO>
+
+=item * L<File::Spec|SPVM::File::Spec>
+
+=item * L<File::Basename|SPVM::File::Basename>
+
+=back
 
 =head1 Repository
 
